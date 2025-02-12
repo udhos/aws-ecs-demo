@@ -11,9 +11,9 @@ on linux_amd64
 # Create the cluster
 
 ```bash
-git clone https://github.com/udhos/toyeks
+git clone https://github.com/udhos/aws-ecs-demo
 
-cd toyeks
+cd aws-ecs-demo
 
 export AWS_PROFILE=...
 

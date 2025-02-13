@@ -7,8 +7,6 @@ resource "aws_ecs_task_definition" "miniapi" {
     {
       name      = "miniapi"
       image     = "docker.io/udhos/miniapi:latest"
-      cpu       = 256
-      memory    = 512
       essential = true
       portMappings = [
         {
@@ -16,8 +14,25 @@ resource "aws_ecs_task_definition" "miniapi" {
           hostPort      = 8080
         }
       ]
+
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          awslogs-create-group = "true"
+          awslogs-group : "/ecs/demo/miniapi"
+          awslogs-region : "${var.region}"
+          awslogs-stream-prefix : "demo-miniapi"
+        }
+      }
+
     }
   ])
+
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+
+  cpu    = 256
+  memory = 512
 
   // The task execution role grants the Amazon ECS container and Fargate agents permission to make AWS API calls on your behalf. 
   execution_role_arn = aws_iam_role.miniapi_execution_role.arn
@@ -34,7 +49,7 @@ data "aws_iam_policy_document" "miniapi_execution_role_trust" {
 
     principals {
       type        = "Service"
-      identifiers = ["ecs.amazonaws.com"]
+      identifiers = ["ecs-tasks.amazonaws.com"]
     }
   }
 }
@@ -47,6 +62,26 @@ resource "aws_iam_role" "miniapi_execution_role" {
 resource "aws_iam_role_policy_attachment" "miniapi_execution_role" {
   role       = aws_iam_role.miniapi_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+resource "aws_iam_role_policy" "miniapi_execution_role" {
+  name = "miniapi_execution_role"
+  role = aws_iam_role.miniapi_execution_role.id
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "logs:CreateLogGroup",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
 }
 
 # ----------------------------
@@ -78,7 +113,10 @@ resource "aws_iam_role_policy" "miniapi_task_role" {
     Statement = [
       {
         Action = [
-          "ecs:*",
+          "ssmmessages:CreateControlChannel",
+          "ssmmessages:CreateDataChannel",
+          "ssmmessages:OpenControlChannel",
+          "ssmmessages:OpenDataChannel"
         ]
         Effect   = "Allow"
         Resource = "*"

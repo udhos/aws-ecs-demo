@@ -2,6 +2,8 @@
 
 arg="$1"
 
+shift
+
 tf_fmt() {
     terraform fmt -diff -recursive .
 }
@@ -31,7 +33,8 @@ case $arg in
         tf_init
         ;;
     plan)
-        terraform -chdir=./terraform plan -out=./plan
+        echo arg: $@
+        terraform -chdir=./terraform plan -out=./plan $@
         ;;
     apply)
         terraform -chdir=./terraform apply ./plan
@@ -40,7 +43,8 @@ case $arg in
         terraform -chdir=./terraform show
         ;;
     destroy)
-        terraform -chdir=./terraform destroy
+        echo arg: $@
+        terraform -chdir=./terraform destroy $@
         ;;
     refresh)
         terraform -chdir=./terraform apply -refresh-only

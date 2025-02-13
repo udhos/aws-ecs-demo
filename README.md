@@ -45,13 +45,6 @@ cd amazon-ecs-exec-checker
 ## Execute command
 
 ```bash
-aws ecs update-service \
-    --task-definition miniapi \
-    --cluster demo \
-    --service demo \
-    --enable-execute-command \
-    --force-new-deployment
-
 aws ecs execute-command --cluster demo \
     --task bad779bfe77a448c854878853536e7e6 \
     --container miniapi \

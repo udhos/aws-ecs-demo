@@ -1,5 +1,17 @@
 # aws-ecs-demo
 
+# TODO
+
+- [X] ECS Exec.
+- [ ] In-cluster communication (kubecache -> miniapi).
+- [X] Groupcache ecs task auto-discovery (kubecache) - no agent.
+- [ ] Groupcache ecs task auto-discovery (kubecache) - with agent ecs-task-discovery-agent.
+- [ ] Task health check.
+- [ ] Load generator (generator -> kubecache).
+- [ ] Task auto-scaling.
+- [ ] Public access from internet (internet -> kubecache).
+- [ ] Prometheus metrics.
+
 # Requirements
 
 ```bash
@@ -18,14 +30,14 @@ cd aws-ecs-demo
 export AWS_PROFILE=...
 
 ./run.sh boot
-./run.sh plan -var='vpc_id=vpc-0f364168' -var='subnets=["subnet-bb404e91"]' -var='cidr_blocks=["172.31.48.0/20"]'
+./run.sh plan -var='vpc_id=vpc-0f364168' -var='subnets=["subnet-bb404e91"]' -var='cidr_blocks=["172.31.0.0/16"]'
 ./run.sh apply
 ```
 
 # Destroy the cluster
 
 ```bash
-./run.sh destroy -var='vpc_id=vpc-0f364168' -var='subnets=["subnet-bb404e91"]' -var='cidr_blocks=["172.31.48.0/20"]'
+./run.sh destroy -var='vpc_id=vpc-0f364168' -var='subnets=["subnet-bb404e91"]' -var='cidr_blocks=["172.31.0.0/16"]'
 ```
 
 # References
@@ -39,14 +51,14 @@ git clone https://github.com/aws-containers/amazon-ecs-exec-checker
 
 cd amazon-ecs-exec-checker
 
-./check-ecs-exec.sh demo bad779bfe77a448c854878853536e7e6
+./check-ecs-exec.sh demo 523ab4fcd99e431fb2b966fa6d1f5d1a
 ```
 
 ## Execute command
 
 ```bash
 aws ecs execute-command --cluster demo \
-    --task bad779bfe77a448c854878853536e7e6 \
+    --task 523ab4fcd99e431fb2b966fa6d1f5d1a \
     --container miniapi \
     --interactive \
     --command "/bin/sh"
@@ -54,4 +66,11 @@ aws ecs execute-command --cluster demo \
 / # curl miniapi.demo:8080/cards/123
 {"request":{"headers":{"Accept":["*/*"],"User-Agent":["curl/8.10.1"]},"method":"GET","uri":"/cards/123","host":"miniapi.demo:8080","body":"","form_query":{},"form_post":{},"parameters":{"param1":"","param2":""}},"message":"not found","status":404,"server_hostname":"ip-172-31-54-136.ec2.internal","server_version":"1.3.2"}
 / #
+
+aws ecs execute-command --cluster demo \
+    --task 17c30cf353b345679a6bad0319d363a8 \
+    --container kubecache \
+    --interactive \
+    --command "/bin/sh"
+
 ```

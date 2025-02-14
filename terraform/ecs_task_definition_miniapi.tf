@@ -10,20 +10,30 @@ resource "aws_ecs_task_definition" "miniapi" {
       essential = true
       portMappings = [
         {
-          containerPort = 8080
-          hostPort      = 8080
+          "name" : "miniapi",
+          "containerPort" : 8080,
+          "hostPort" : 8080,
+          "protocol" : "tcp",
+          "appProtocol" : "http"
         }
       ]
 
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-          awslogs-create-group = "true"
-          awslogs-group : "/ecs/demo/miniapi"
-          awslogs-region : "${var.region}"
-          awslogs-stream-prefix : "demo-miniapi"
+          awslogs-create-group  = "true"
+          awslogs-group         = "/ecs/demo/miniapi"
+          awslogs-region        = "${var.region}"
+          awslogs-stream-prefix = "demo-miniapi"
         }
       }
+
+      environment = [
+        {
+          name  = "ROUTE"
+          value = "/v1/hello;/v1/world;/card/{cardId}"
+        }
+      ]
 
     }
   ])

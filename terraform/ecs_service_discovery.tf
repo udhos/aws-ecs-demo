@@ -6,7 +6,7 @@ resource "aws_service_discovery_service" "ecs_task_discovery_agent" {
     namespace_id = aws_service_discovery_private_dns_namespace.demo.id
 
     dns_records {
-      ttl  = 10
+      ttl  = var.dns_ttl_seconds
       type = "A"
     }
 
@@ -20,12 +20,12 @@ resource "aws_ecs_service" "ecs-task-discovery-agent" {
   task_definition = aws_ecs_task_definition.ecs_task_discovery_agent.arn
   desired_count   = 1
 
-  enable_execute_command = true
+  enable_execute_command = var.enable_execute_command
 
   network_configuration {
     subnets          = var.subnets
     security_groups  = [aws_security_group.demo.id]
-    assign_public_ip = true
+    assign_public_ip = var.assign_public_ip
   }
 
   service_registries {

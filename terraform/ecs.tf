@@ -10,7 +10,6 @@ resource "aws_ecs_cluster" "demo" {
     name  = "containerInsights"
     value = "disabled"
   }
-
 }
 
 resource "aws_ecs_cluster_capacity_providers" "demo" {
@@ -32,8 +31,8 @@ resource "aws_service_discovery_private_dns_namespace" "demo" {
 }
 
 resource "aws_security_group" "demo" {
-  name        = "demo"
-  description = "demo"
+  name        = local.cluster_name
+  description = local.cluster_name
   vpc_id      = var.vpc_id
 
   ingress {
@@ -52,6 +51,6 @@ resource "aws_security_group" "demo" {
   }
 
   tags = {
-    Name = "demo"
+    Name = local.cluster_name
   }
 }

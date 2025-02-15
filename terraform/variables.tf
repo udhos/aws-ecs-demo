@@ -14,3 +14,15 @@ variable "cidr_blocks" {
 variable "region" {
   default = "us-east-1"
 }
+
+variable "dns_ttl_seconds" {
+  default = 20
+}
+
+variable "enable_execute_command" {
+  default = true
+}
+
+variable "assign_public_ip" {
+  default = true
+}

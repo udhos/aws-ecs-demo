@@ -3,7 +3,7 @@
 # TODO
 
 - [X] ECS Exec.
-- [ ] In-cluster communication (kubecache -> miniapi).
+- [X] In-cluster communication (kubecache -> miniapi).
 - [X] Groupcache ecs task auto-discovery (kubecache) - no agent.
 - [ ] Groupcache ecs task auto-discovery (kubecache) - with agent ecs-task-discovery-agent.
 - [ ] Task health check.
@@ -58,7 +58,7 @@ cd amazon-ecs-exec-checker
 
 ```bash
 aws ecs execute-command --cluster demo \
-    --task 523ab4fcd99e431fb2b966fa6d1f5d1a \
+    --task c2730bc4f1fa4de683e079710faba501 \
     --container miniapi \
     --interactive \
     --command "/bin/sh"

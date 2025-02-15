@@ -37,10 +37,10 @@ resource "aws_security_group" "demo" {
   vpc_id      = var.vpc_id
 
   ingress {
-    description = "all tcp from vpc"
+    description = "all from vpc cidr"
     from_port   = 0
     to_port     = 0
-    protocol    = "tcp"
+    protocol    = -1
     cidr_blocks = var.cidr_blocks
   }
 

@@ -5,7 +5,7 @@
 - [X] ECS Exec.
 - [X] In-cluster communication (kubecache -> miniapi).
 - [X] Groupcache ecs task auto-discovery (kubecache) - no agent.
-- [ ] Groupcache ecs task auto-discovery (kubecache) - with agent ecs-task-discovery-agent.
+- [X] Groupcache ecs task auto-discovery (kubecache) - with agent ecs-task-discovery-agent.
 - [ ] Task health check.
 - [ ] Load generator (generator -> kubecache).
 - [ ] Task auto-scaling.

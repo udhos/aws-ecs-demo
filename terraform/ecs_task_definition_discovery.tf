@@ -30,14 +30,6 @@ resource "aws_ecs_task_definition" "ecs_task_discovery_agent" {
 
       environment = [
         {
-          name  = "TRACE"
-          value = "false"
-        },
-        {
-          name  = "BACKEND_URL"
-          value = "http://miniapi.demo:8080"
-        },
-        {
           name  = "COMPUTE"
           value = "ecs"
         },

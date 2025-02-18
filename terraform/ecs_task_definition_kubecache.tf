@@ -43,7 +43,7 @@ resource "aws_ecs_task_definition" "kubecache" {
         },
         {
           name  = "GROUPCACHE_VERSION"
-          value = "2"
+          value = "${var.groupcache_version}"
         }
       ]
 

@@ -26,3 +26,7 @@ variable "enable_execute_command" {
 variable "assign_public_ip" {
   default = true
 }
+
+variable "groupcache_version" {
+  default = "2"
+}

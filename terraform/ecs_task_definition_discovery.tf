@@ -40,6 +40,10 @@ resource "aws_ecs_task_definition" "ecs_task_discovery_agent" {
         {
           name  = "COMPUTE"
           value = "ecs"
+        },
+        {
+          name  = "GROUPCACHE_VERSION"
+          value = "${var.groupcache_version}"
         }
       ]
 

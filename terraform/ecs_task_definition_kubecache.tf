@@ -40,6 +40,10 @@ resource "aws_ecs_task_definition" "kubecache" {
         {
           name  = "COMPUTE"
           value = "ecs"
+        },
+        {
+          name  = "GROUPCACHE_VERSION"
+          value = "2"
         }
       ]
 

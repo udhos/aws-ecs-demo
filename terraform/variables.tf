@@ -30,3 +30,11 @@ variable "assign_public_ip" {
 variable "groupcache_version" {
   default = "2"
 }
+
+variable "min_capacity" {
+  default = 2
+}
+
+variable "max_capacity" {
+  default = 4
+}

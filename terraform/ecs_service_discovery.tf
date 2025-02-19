@@ -14,11 +14,11 @@ resource "aws_service_discovery_service" "ecs_task_discovery_agent" {
   }
 }
 
-resource "aws_ecs_service" "ecs-task-discovery-agent" {
+resource "aws_ecs_service" "ecs_task_discovery_agent" {
   name            = "ecs-task-discovery-agent"
   cluster         = aws_ecs_cluster.demo.id
   task_definition = aws_ecs_task_definition.ecs_task_discovery_agent.arn
-  desired_count   = 2
+  desired_count   = var.min_capacity
 
   enable_execute_command = var.enable_execute_command
 
@@ -34,5 +34,31 @@ resource "aws_ecs_service" "ecs-task-discovery-agent" {
 
   lifecycle {
     ignore_changes = [desired_count]
+  }
+}
+
+resource "aws_appautoscaling_target" "ecs_task_discovery_agent" {
+  max_capacity       = var.max_capacity
+  min_capacity       = var.min_capacity
+  resource_id        = "service/${aws_ecs_cluster.demo.name}/${aws_ecs_service.ecs_task_discovery_agent.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
+}
+
+resource "aws_appautoscaling_policy" "ecs_task_discovery_agent" {
+  name               = "ecs-task-discovery-agent"
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = aws_appautoscaling_target.ecs_task_discovery_agent.resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs_task_discovery_agent.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ecs_task_discovery_agent.service_namespace
+
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageCPUUtilization"
+    }
+
+    target_value       = 50
+    scale_in_cooldown  = 60
+    scale_out_cooldown = 30
   }
 }

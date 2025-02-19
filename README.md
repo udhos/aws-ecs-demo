@@ -6,9 +6,9 @@
 - [X] In-cluster communication (kubecache -> miniapi).
 - [X] Groupcache ecs task auto-discovery (kubecache) - no agent.
 - [X] Groupcache ecs task auto-discovery (kubecache) - with agent ecs-task-discovery-agent.
-- [ ] Task health check.
-- [ ] Load generator (generator -> kubecache).
+- [X] Task health check.
 - [ ] Task auto-scaling.
+- [ ] Load generator (generator -> kubecache).
 - [ ] Public access from internet (internet -> kubecache).
 - [ ] Prometheus metrics.
 
@@ -58,7 +58,7 @@ cd amazon-ecs-exec-checker
 
 ```bash
 aws ecs execute-command --cluster demo \
-    --task c2730bc4f1fa4de683e079710faba501 \
+    --task 60b6b411392c4f7fb2462bc400dc4955 \
     --container miniapi \
     --interactive \
     --command "/bin/sh"

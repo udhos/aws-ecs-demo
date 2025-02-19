@@ -28,6 +28,18 @@ resource "aws_ecs_task_definition" "miniapi" {
         }
       }
 
+      // https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_HealthCheck.html
+      healthCheck = {
+        command = [
+          "CMD-SHELL",
+          "curl -f http://localhost:8080/health || exit 1"
+        ],
+        interval    = 10 # default: 30
+        retries     = 3  # default: 3
+        startPeriod = 0  # default: 0
+        timeout     = 5  # default: 5
+      },
+
       environment = [
         {
           name  = "ROUTE"

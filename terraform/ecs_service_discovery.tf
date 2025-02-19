@@ -18,7 +18,7 @@ resource "aws_ecs_service" "ecs-task-discovery-agent" {
   name            = "ecs-task-discovery-agent"
   cluster         = aws_ecs_cluster.demo.id
   task_definition = aws_ecs_task_definition.ecs_task_discovery_agent.arn
-  desired_count   = 1
+  desired_count   = 2
 
   enable_execute_command = var.enable_execute_command
 

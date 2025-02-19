@@ -7,7 +7,7 @@
 - [X] Groupcache ecs task auto-discovery (kubecache) - no agent.
 - [X] Groupcache ecs task auto-discovery (kubecache) - with agent ecs-task-discovery-agent.
 - [X] Task health check.
-- [ ] Task auto-scaling.
+- [X] Task auto-scaling.
 - [ ] Load generator (generator -> kubecache).
 - [ ] Public access from internet (internet -> kubecache).
 - [ ] Prometheus metrics.

@@ -32,6 +32,12 @@ resource "aws_ecs_service" "miniapi" {
     registry_arn = aws_service_discovery_service.miniapi.arn
   }
 
+  load_balancer {
+    target_group_arn = aws_lb_target_group.miniapi.arn
+    container_name   = "miniapi"
+    container_port   = 8080
+  }
+
   lifecycle {
     ignore_changes = [desired_count]
   }

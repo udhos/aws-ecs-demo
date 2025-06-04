@@ -40,7 +40,12 @@ resource "aws_ecs_task_definition" "kubecache" {
         timeout     = 5  # default: 5
       },
 
+      // https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-connection-draining.html
       environment = [
+        {
+          name  = "ECS_CONTAINER_STOP_TIMEOUT"
+          value = "2"
+        },
         {
           name  = "TRACE"
           value = "false"

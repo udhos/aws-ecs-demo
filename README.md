@@ -8,15 +8,16 @@
 - [X] Groupcache ecs task auto-discovery (kubecache) - with agent ecs-task-discovery-agent.
 - [X] Task health check.
 - [X] Task auto-scaling.
+- [X] Load balancer.
+- [X] Public access from internet (internet -> kubecache).
 - [ ] Load generator (generator -> kubecache).
-- [ ] Public access from internet (internet -> kubecache).
 - [ ] Prometheus metrics.
 
 # Requirements
 
 ```bash
 $ terraform version
-Terraform v1.10.5
+Terraform v1.12.1
 on linux_amd64
 ```
 
@@ -30,14 +31,24 @@ cd aws-ecs-demo
 export AWS_PROFILE=...
 
 ./run.sh boot
-./run.sh plan -var='vpc_id=vpc-0f364168' -var='subnets=["subnet-bb404e91"]' -var='cidr_blocks=["172.31.0.0/16"]'
+./run.sh plan -var='vpc_id=vpc-0f364168' -var='subnets=["subnet-bb404e91","subnet-f19283cc"]' -var='cidr_blocks=["172.31.0.0/16"]'
 ./run.sh apply
+```
+
+# Test load balancer
+
+```bash
+# kubecache
+curl lb_dns:8001/v1/hello
+
+# miniapi
+curl lb_dns:8002/v1/hello
 ```
 
 # Destroy the cluster
 
 ```bash
-./run.sh destroy -var='vpc_id=vpc-0f364168' -var='subnets=["subnet-bb404e91"]' -var='cidr_blocks=["172.31.0.0/16"]'
+./run.sh destroy -var='vpc_id=vpc-0f364168' -var='subnets=["subnet-bb404e91","subnet-f19283cc"]' -var='cidr_blocks=["172.31.0.0/16"]'
 ```
 
 # References

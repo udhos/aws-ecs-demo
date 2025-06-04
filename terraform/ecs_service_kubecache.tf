@@ -32,6 +32,12 @@ resource "aws_ecs_service" "kubecache" {
     registry_arn = aws_service_discovery_service.kubecache.arn
   }
 
+  load_balancer {
+    target_group_arn = aws_lb_target_group.kubecache.arn
+    container_name   = "kubecache"
+    container_port   = 8080
+  }
+
   lifecycle {
     ignore_changes = [desired_count]
   }
